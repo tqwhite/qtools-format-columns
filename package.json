@@ -1,7 +1,10 @@
 {
   "name": "qtools-format-columns",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Replace characters with spaces to form columns in text",
+  "bin": {
+  	"qtFormatColumns":"./qtools-number-iterator.js"
+  	},
   "main": "qtools-format-columns.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
