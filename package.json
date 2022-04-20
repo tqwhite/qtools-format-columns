@@ -1,0 +1,23 @@
+{
+  "name": "qtools-format-columns",
+  "version": "1.0.0",
+  "description": "Replace characters with spaces to form columns in text",
+  "main": "qtools-format-columns.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tqwhite/qtools-format-columns.git"
+  },
+  "author": "TQ White II",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tqwhite/qtools-format-columns/issues"
+  },
+  "homepage": "https://github.com/tqwhite/qtools-format-columns#readme",
+  "dependencies": {
+    "qtools-functional-library": "^1.1.10",
+    "qtools-parse-command-line": "^1.0.5"
+  }
+}
