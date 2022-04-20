@@ -6,6 +6,11 @@ const commandLineParser = require('qtools-parse-command-line');
 //PROCESS STRING ========================================================
 
 const commandLineParameters = commandLineParser.getParameters();
+if (commandLineParameters.qtGetSurePath('values.help') || commandLineParameters.qtGetSurePath('switches.help')) {
+const help=require('./lib/help.js');
+console.log(help);
+process.exit();
+}
 
 const splitToColumns = ({ delimitters, prefixes, suffixes }) => inTextList => {
 	return inTextList.map(line => {
@@ -102,8 +107,8 @@ var convertText = ({
 //INPUT/OUTPUT ========================================================
 
 const delimitters = commandLineParameters.qtGetSurePath('values.delimitters', [ ': +' ]); // prettier-ignore
-const prefixes = commandLineParameters.qtGetSurePath('values.prefixes', [ ': +' ]); // prettier-ignore
-const suffixes = commandLineParameters.qtGetSurePath('values.suffixes', [ ': +' ]); // prettier-ignore
+const prefixes = commandLineParameters.qtGetSurePath('values.prefixes', [ '' ]); // prettier-ignore
+const suffixes = commandLineParameters.qtGetSurePath('values.suffixes', [ ':' ]); // prettier-ignore
 const spacingString = commandLineParameters.qtGetSurePath('values.spacingString', ' '); // prettier-ignore
 const columnGap = commandLineParameters.qtGetSurePath('values.columnGap', 4); // prettier-ignore
 
