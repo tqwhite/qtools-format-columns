@@ -19,6 +19,10 @@ DESCRIPTION
 	
 	delimitters, suffixes and prefixes are all coordinated lists. The segment isolated 
 	by the first delimitter is wrapped by the first suffix and prefix, if any.
+	
+	Note: Because the original use case for this was to process BASH output, it defaults
+	to stripping BASH terminal color strings for measurement during alignment. It does
+	not yet do anything else complicated to insure correct alignment.
 
 OPTIONS
 

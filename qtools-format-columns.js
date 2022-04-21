@@ -6,10 +6,13 @@ const commandLineParser = require('qtools-parse-command-line');
 //PROCESS STRING ========================================================
 
 const commandLineParameters = commandLineParser.getParameters();
-if (commandLineParameters.qtGetSurePath('values.help') || commandLineParameters.qtGetSurePath('switches.help')) {
-const help=require('./lib/help.js');
-console.log(help);
-process.exit();
+if (
+	commandLineParameters.qtGetSurePath('values.help') ||
+	commandLineParameters.qtGetSurePath('switches.help')
+) {
+	const help = require('./lib/help.js');
+	process.stdout.write(help);
+	process.exit();
 }
 
 const splitToColumns = ({ delimitters, prefixes, suffixes }) => inTextList => {
@@ -49,8 +52,10 @@ const splitToColumns = ({ delimitters, prefixes, suffixes }) => inTextList => {
 
 		return mapResult;
 	});
-
 };
+
+const removeNonPrintingCharacters = line =>
+	line ? line.replace(/(\[\d+)m/g, '') : '';
 
 const getColumnDataWidth = columnSplit => {
 	const initWidthArray = columnSplit =>
@@ -58,31 +63,47 @@ const getColumnDataWidth = columnSplit => {
 			.reduce((result, item) => Math.max(result, item.length), 0)
 			.qtIterate(item => 0)
 			.map((prevWidth, inx) =>
-				columnSplit.reduce(
-					(result, lineSet) =>
-						lineSet.length - 1
-							? Math.max(
-									lineSet[inx] && lineSet[inx].length ? lineSet[inx].length : 0,
-									result
-								)
-							: result,
-					0
-				)
+				columnSplit.reduce((result, lineSet) => {
+					const cleanLine = removeNonPrintingCharacters(
+						lineSet.qtGetSurePath(`[${inx}]`)
+					);
+					return lineSet.length - 1
+						? Math.max(cleanLine ? cleanLine.length : 0, result)
+						: result;
+				}, 0)
 			);
 	return initWidthArray(columnSplit);
 };
+
 const padAndJoinLines = (columnDataWidth, columnSplit, options) => {
 	const { prefixes, suffixes, spacingString, columnGap } = options;
+
+	const padEnd = (inString, count, spacingString) => {
+		let outString = inString;
+		const cleanLength = removeNonPrintingCharacters(inString).length;
+
+		const spacesCount = count - cleanLength;
+
+		spacesCount.qtIterate(item => {
+			outString = outString + spacingString;
+
+			return 'unused';
+		});
+
+		return outString;
+	};
+
 	return columnSplit.map(lineSet => {
 		return lineSet
 			.map((segment, inx) =>
-				segment.padEnd(columnDataWidth[inx] + +columnGap, spacingString)
+				padEnd(segment, columnDataWidth[inx] + +columnGap, spacingString)
 			)
 			.join('')
 			.trim();
 	});
 };
-var convertText = ({
+
+const convertText = ({
 	delimitters,
 	prefixes,
 	suffixes,

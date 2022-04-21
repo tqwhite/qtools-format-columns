@@ -1,6 +1,6 @@
 {
   "name": "qtools-format-columns",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Replace characters with spaces to form columns in text",
   "bin": {
     "qtFormatColumns": "./qtools-format-columns.js"
