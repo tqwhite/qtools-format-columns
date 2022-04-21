@@ -22,7 +22,7 @@ DESCRIPTION
 	
 	Note: Because the original use case for this was to process BASH output, it defaults
 	to stripping BASH terminal color strings for measurement during alignment. It does
-	not yet do anything else complicated to insure correct alignment.
+	not yet do anything else with non-printing characters to insure correct alignment.
 
 OPTIONS
 
@@ -30,10 +30,10 @@ OPTIONS
 	
 PARAMETERS
 
---delimitters		default is ': +' (treats first colon as a column boundary)
+--delimitters		default is ':\\s+' (treats first colon and space as a column boundary)
 --prefixes			defaults is empty string
---suffixes			default is ':' (replaced colon stripped by default delimiter)
---spacingString		default is ' '
+--suffixes			default is ''
+--spacingString		default is ' ' (space)
 --columnGap			default is 4 (four spaces)
 
 EXAMPLE

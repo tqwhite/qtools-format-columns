@@ -64,6 +64,9 @@ const getColumnDataWidth = columnSplit => {
 			.qtIterate(item => 0)
 			.map((prevWidth, inx) =>
 				columnSplit.reduce((result, lineSet) => {
+					if (lineSet.length === 1) {
+						return result;
+					}
 					const cleanLine = removeNonPrintingCharacters(
 						lineSet.qtGetSurePath(`[${inx}]`)
 					);
@@ -77,22 +80,18 @@ const getColumnDataWidth = columnSplit => {
 
 const padAndJoinLines = (columnDataWidth, columnSplit, options) => {
 	const { prefixes, suffixes, spacingString, columnGap } = options;
-
+	
 	const padEnd = (inString, count, spacingString) => {
 		let outString = inString;
 		const cleanLength = removeNonPrintingCharacters(inString).length;
-
 		const spacesCount = count - cleanLength;
-
 		spacesCount.qtIterate(item => {
 			outString = outString + spacingString;
-
 			return 'unused';
 		});
-
 		return outString;
 	};
-
+	
 	return columnSplit.map(lineSet => {
 		return lineSet
 			.map((segment, inx) =>
@@ -127,11 +126,11 @@ const convertText = ({
 
 //INPUT/OUTPUT ========================================================
 
-const delimitters = commandLineParameters.qtGetSurePath('values.delimitters', [ ': +' ]); // prettier-ignore
+const delimitters = commandLineParameters.qtGetSurePath('values.delimitters', [ ':\\s+' ]); // prettier-ignore
 const prefixes = commandLineParameters.qtGetSurePath('values.prefixes', [ '' ]); // prettier-ignore
-const suffixes = commandLineParameters.qtGetSurePath('values.suffixes', [ ':' ]); // prettier-ignore
+const suffixes = commandLineParameters.qtGetSurePath('values.suffixes', []); // prettier-ignore
 const spacingString = commandLineParameters.qtGetSurePath('values.spacingString', ' '); // prettier-ignore
-const columnGap = commandLineParameters.qtGetSurePath('values.columnGap', 4); // prettier-ignore
+const columnGap = commandLineParameters.qtGetSurePath('values.columnGap', 8); // prettier-ignore
 
 let inString = '';
 
@@ -149,7 +148,6 @@ process.stdin.on('end', () =>
 				process.stdout.write(`${''.padEnd(50, '=')}\n\nERROR:  ${err.toString()}\n\n${''.padEnd(50, '=')}\n\n${inString}`);
 				return;
 			}
-
 			process.stdout.write(result);
 		}
 	)
